@@ -63,16 +63,15 @@ class Board
 	end
 
 	def empty_square?(position)
-		board[position].nil?
+		!!self[position]
 	end
 
 	def dup
 		new_board = Board.new
 		pieces = @squares.flatten.compact
 		pieces.each { |piece| new_board.add_piece(piece.dup) }	
+		new_board
 	end
-
-	private 
 
 	def add_piece(piece)
 		self[piece.position] = piece
@@ -87,7 +86,7 @@ class Board
 		black_pieces = pieces_of_color :black
 		red_pieces = pieces_of_color :red
 		 
-		black_pieces.empty || red_pieces.empty?
+		black_pieces.empty? || red_pieces.empty?
 	end
 
 end

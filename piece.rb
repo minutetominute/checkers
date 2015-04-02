@@ -4,7 +4,7 @@ class Piece
 
 	attr_accessor :king, :position, :color, :board
 
-	def initialize(board, color)
+	def initialize(board, color, position = nil)
 		@color = color
 		@king = false
 		@position = position
@@ -50,13 +50,13 @@ class Piece
 	
 	def valid_jump?(location)
 		@board.empty_square?(location) && 
-			jumped_location(position, location).color == opposite_color(color)
+			@board[jumped_location(position, location)].color == opposite_color(color)
 	end
 	
 	def perform_moves(move_sequence)
-		successful_move = valid_sequence?(move_sequence)
+		successful_move = valid_move_seq?(move_sequence)
 		if successful_move
-			perform_moves(move_sequence)
+			perform_moves!(move_sequence)
 		else
 			raise InvalidMoveError
 		end
@@ -66,12 +66,12 @@ class Piece
 		successful_move = false
 		if move_sequence.one? 
 			successful_move = perform_slide(move_sequence.first)	
+		else
+			move_sequence.each do |move|
+				successful_move = perform_jump(move)
+			end
 		end
-
-		move_sequence.each do |move|
-			successful_move = perform_jump(move)
-		end
-		raise InvalidMoveError unless succcessful_move
+		raise InvalidMoveError unless successful_move
 	end
 
 	def valid_move_seq?(move_sequence)
@@ -87,6 +87,8 @@ class Piece
 		direction = vector.matrix(:/, vector)
 		raise InvalidJumpError unless direction.all? { |el| el.abs == 1 }
 		direction.matrix(:+, to)
+	rescue
+		byebug
 	end
 
 	def move_diffs
@@ -108,7 +110,7 @@ class Piece
 	end
 	
 	def dup
-		Piece.new(nil, color)
+		Piece.new(nil, color, self.position)
 	end
 
 end

@@ -1,5 +1,5 @@
 class Player
-	def initialize()
+	def initialize
 	end	
 end
 
@@ -14,7 +14,7 @@ class HumanPlayer < Player
 	def parse_input(input)
 		moves = input.split(' ')
 		moves.each_with_object([]) do |coordinate, move|
-			move << parse_coordinate(coordinate)		
+			move << parse_coordinates(coordinate)		
 		end
 	end
 	
@@ -28,7 +28,7 @@ class HumanPlayer < Player
 	end
 
 	def num_to_index(num)
-		8 - num
+		8 - num.to_i
 	end
 
 end

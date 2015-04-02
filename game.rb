@@ -2,6 +2,7 @@
 
 require './board.rb'
 require './player.rb'
+require './error.rb'
 
 class Game
 
@@ -19,12 +20,12 @@ class Game
 				puts @board.render
 				begin
 					input = player.get_input
-					board[input.shift].perform_moves(input)
+					@board[input.shift].perform_moves(input)
 				rescue InvalidMoveError
 					puts "Invalid move! Error: #{e}"
 				end
 				puts input
-				break if board.over?
+				break if @board.over?
 			end
 		end
 		puts "Game over!"
