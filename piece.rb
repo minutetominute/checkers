@@ -75,9 +75,9 @@ class Piece
 		else
 			move_sequence.each do |move|
 				successful_move = perform_jump(move)
+				raise InvalidMoveError unless successful_move
 			end
 		end
-		raise InvalidMoveError unless successful_move
 	end
 
 	def valid_move_seq?(move_sequence)
@@ -113,7 +113,7 @@ class Piece
 	end
 
 	def render
-		'●'
+		king ? '☀' : '●'
 	end
 	
 	def dup
