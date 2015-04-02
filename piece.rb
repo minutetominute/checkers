@@ -52,6 +52,11 @@ class Piece
 		@board.empty_square?(location) && 
 			jumped_location(position, location).color == opposite_color(color)
 	end
+	
+	def perform_moves(move_sequence)
+		successful_move = valid_sequence?(move_sequence)
+		successful_move
+	end
 
 	def perform_moves!(move_sequence)
 		successful_move = false
