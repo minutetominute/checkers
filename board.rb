@@ -10,7 +10,7 @@ class Board
 
 	def render
 		square_color = :white
-		@squares.each_with_object([]) do |row, board|
+		@squares.each_with_object('') do |row, board|
 			row.each do |square|
 
 				if square.nil?
@@ -22,6 +22,7 @@ class Board
 				square_color = opposite_color(square_color)
 			end
 			board << "\n"
+			square_color = opposite_color(square_color)
 		end
 	end
 	
