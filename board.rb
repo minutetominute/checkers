@@ -14,11 +14,14 @@ class Board
 			row.each do |square|
 
 				if square.nil?
-					board << "  X".colorize(background: square_color) if square.nil?
+					board << "  ".colorize(background: square_color) if square.nil?
 				else	
 					board << square.render(square_color)
 				end
+
+				square_color = opposite_color(square_color)
 			end
+			board << "\n"
 		end
 	end
 	
