@@ -1,5 +1,5 @@
 module CheckersHelper
 	def opposite_color(color)
-		color == :white ? :black : :white
+		color == :red ? :black : :red
 	end
 end

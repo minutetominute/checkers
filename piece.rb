@@ -20,4 +20,8 @@ class Piece
 	def promote?
 		
 	end
+
+	def render
+		self.color == :red ? '○' : '●'
+	end
 end

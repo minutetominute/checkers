@@ -9,14 +9,14 @@ class Board
 	end
 
 	def render
-		square_color = :white
+		square_color = :red
 		@squares.each_with_object('') do |row, board|
 			row.each do |square|
 
 				if square.nil?
-					board << "  ".colorize(background: square_color) if square.nil?
+					board << "  ".colorize(background: color_maps_to(square_color)) if square.nil?
 				else	
-					board << square.render(square_color)
+					board << square.render
 				end
 
 				square_color = opposite_color(square_color)
@@ -26,4 +26,17 @@ class Board
 		end
 	end
 	
+	def color_maps_to(color)
+		color == :black ? :light_black : :red
+	end
+
+	def populate
+		(0..7).to_a
+	end
+
+	def [](pos)
+		row, col = pos
+		@squares[row][col]
+	end
+
 end
