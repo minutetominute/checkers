@@ -7,7 +7,6 @@ class Board
 	
 	def initialize
 		@squares = Array.new(8) { Array.new(8) }	
-		self.populate
 	end
 
 	def render
@@ -41,10 +40,10 @@ class Board
 		3.times do |row_index|
 			7.times do |col_index|
 				#red pieces
-					self[[row_index, col_index + shift]] = Piece.new(self, :red)
+				self[[row_index, col_index + shift]] = Piece.new(self, :red)
 				#black pieces
-					self[[row_index + 5, col_index + shift - 1]] = Piece.new(self, :black)
-					shift = (shift + 1) % 2
+				self[[row_index + 5, col_index + shift - 1]] = Piece.new(self, :black)
+				shift = (shift + 1) % 2
 			end
 		end
 	end
@@ -60,4 +59,21 @@ class Board
 		@squares[row][col] = piece
 	end
 
+	def empty_square?(position)
+		board[position].nil?
+	end
+
+	def dup
+		new_board = Board.new
+		pieces = @squares.flatten.compact
+		pieces.each { |piece| new_board.add_piece(piece.dup_with_board(new_board)) }	
+	end
+
+	private 
+
+	def add_piece(piece)
+		self[piece.position] = piece
+		piece.board = self
+	end
 end
+

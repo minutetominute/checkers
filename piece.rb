@@ -12,26 +12,66 @@ class Piece
 	end
 
 	def perform_slide(to)
-		move_diffs.any? { |diff| diff.zip_sum(position) == to } ? move_to(to) : false
+		if valid_slide?(to)
+			move_to(to)
+			true
+		else
+			false
+		end
+	end
+	
+	def valid_slide?(to) 
+		move_available?(to) && @board.empty_square?(position)
+	end
+
+	def move_available?(to)
+		move_diffs.any? { |diff| diff.matrix(:+, position) == to }
 	end
 
 	def move_to(location)
 		@board[position] = nil
-		self.position = location
 		@board[location] = self
 		self.king = true if promote?
-		true
 	end
 
 	def perform_jump(location)
+		if valid_jump?(location)
+			jump_to(location)
+			true
+		else
+			false
+		end
+	end
+	
+	def jump_to(location)
 		@board[jumped_location(position, location)] = nil
 		move_to(location)
 	end
+	
+	def valid_jump?(location)
+		@board.empty_square?(location) && 
+			jumped_location(position, location).color == opposite_color(color)
+	end
+
+	def perform_moves!(move_sequence)
+		if move_sequence.one? 
+			perform_slide(move_sequence.first)	
+		end
+
+		move_sequence.each do |move|
+			perform_jump(move)
+		end
+	end
+
+	def valid_move_seq?(move_sequence)
+			
+	end
 
 	def jumped_location(from, to)
-		jumped = from.zip_sum(to).map { |vector| - vector / 2 }.zip_sum(from)
-		p jumped
-		jumped
+		vector = from.matrix(:-, to)
+		direction = vector.matrix(:/, vector)
+		raise InvalidJumpError unless direction.all? { |el| el.abs == 1 }
+		direction.matrix(:+, to)
 	end
 
 	def move_diffs
@@ -51,4 +91,9 @@ class Piece
 	def render
 		'●'
 	end
+	
+	def dup_with_board(board)
+		Piece.new(board, color)
+	end
+
 end
