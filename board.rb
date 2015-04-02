@@ -18,7 +18,7 @@ class Board
 				if square.nil?
 					board << "  ".colorize(background: color_maps_to(square_color)) if square.nil?
 				else	
-					board << render_square_with_piece(square.render, square_color)
+					board << render_square_with_piece(square, square_color)
 				end
 
 				square_color = opposite_color(square_color)
@@ -28,8 +28,8 @@ class Board
 		end
 	end
 	
-	def render_square_with_piece(piece_color, square_color)
-		(piece_color + " ").colorize(:black).colorize(background: color_maps_to(square_color))
+	def render_square_with_piece(piece, square_color)
+		(piece.render + " ").colorize(piece.color).colorize(background: color_maps_to(square_color))
 	end
 	
 	def color_maps_to(color)
@@ -41,9 +41,9 @@ class Board
 		3.times do |row_index|
 			7.times do |col_index|
 				#red pieces
-					self[[row_index, col_index + shift]] = Piece.new(:red)
+					self[[row_index, col_index + shift]] = Piece.new(self, :red)
 				#black pieces
-					self[[row_index + 5, col_index + shift - 1]] = Piece.new(:black)
+					self[[row_index + 5, col_index + shift - 1]] = Piece.new(self, :black)
 					shift = (shift + 1) % 2
 			end
 		end
@@ -56,6 +56,7 @@ class Board
 
 	def []=(pos, piece)
 		row, col = pos
+		piece.position = pos unless piece.nil?
 		@squares[row][col] = piece
 	end
 
