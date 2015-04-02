@@ -55,7 +55,11 @@ class Piece
 	
 	def perform_moves(move_sequence)
 		successful_move = valid_sequence?(move_sequence)
-		successful_move
+		if successful_move
+			perform_moves(move_sequence)
+		else
+			raise InvalidMoveError
+		end
 	end
 
 	def perform_moves!(move_sequence)
