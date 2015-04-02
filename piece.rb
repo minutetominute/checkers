@@ -1,5 +1,7 @@
 class Piece
 
+	attr_accessor :king
+
 	def initialize(color)
 		@color = color
 		@king = false
@@ -14,7 +16,9 @@ class Piece
 	end
 
 	def move_diffs
-
+		diffs = @color == :red ? [[1, 1], [1, -1]] : [[-1, 1], [-1, -1]] 
+		diffs + diffs.map { |diff| [-diff[0], diff[1]] } if king
+		diffs
 	end
 
 	def promote?
@@ -22,6 +26,6 @@ class Piece
 	end
 
 	def render
-		self.color == :red ? '○' : '●'
+		@color == :red ? '○' : '●'
 	end
 end
