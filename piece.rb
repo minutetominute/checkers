@@ -23,7 +23,7 @@ class Piece
 	end
 	
 	def valid_slide?(to) 
-		move_available?(to) && @board.empty_square?(to)
+		move_available?(to) && @board.empty_square?(to) && @board.on_board?(to)
 	end
 
 	def move_available?(to)
@@ -51,8 +51,9 @@ class Piece
 	end
 	
 	def valid_jump?(location)
+		jumped_piece = @board[jumped_location(position, location)] 
 		@board.empty_square?(location) && 
-			@board[jumped_location(position, location)].color == opposite_color(color)
+			jumped_piece.color == opposite_color(color) && @board.on_board?(location)
 	end
 	
 	def perform_moves(move_sequence)

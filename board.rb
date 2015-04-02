@@ -13,7 +13,7 @@ class Board
 	def render
 		square_color = :red
 		row_index = 8
-		@squares.each_with_object('') do |row, board|
+		@squares.each_with_object("\n") do |row, board|
 			board << (row_index).to_s
 			row_index -= 1
 			row.each do |square|
@@ -27,7 +27,7 @@ class Board
 				square_color = opposite_color(square_color)
 			end
 			board << "\n"
-			board << " A B C D E F G H" if row == @squares.last
+			board << " A B C D E F G H\n\n" if row == @squares.last
 			square_color = opposite_color(square_color)
 		end
 	end
@@ -89,6 +89,10 @@ class Board
 		red_pieces = pieces_of_color :red
 		 
 		black_pieces.empty? || red_pieces.empty?
+	end
+
+	def on_board?(location)
+		location.all? { |el| el.between?(0, 7) }
 	end
 
 end
