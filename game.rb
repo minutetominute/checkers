@@ -20,9 +20,12 @@ class Game
 				puts @board.render
 				begin
 					input = player.get_input
-					@board[input.shift].perform_moves(input)
-				rescue InvalidMoveError
+					from = input.shift
+					raise InvalidMoveError.new("No piece there!") if @board[from].nil?
+					@board[from].perform_moves(input)
+				rescue InvalidMoveError => e
 					puts "Invalid move! Error: #{e}"
+					retry
 				end
 				puts input
 				break if @board.over?

@@ -12,8 +12,10 @@ class Board
 
 	def render
 		square_color = :red
+		row_index = 8
 		@squares.each_with_object('') do |row, board|
-			board << (8 - @squares.index(row)).abs.to_s
+			board << (row_index).to_s
+			row_index -= 1
 			row.each do |square|
 
 				if square.nil?
@@ -63,7 +65,7 @@ class Board
 	end
 
 	def empty_square?(position)
-		!!self[position]
+		!self[position]
 	end
 
 	def dup

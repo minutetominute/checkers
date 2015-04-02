@@ -1,6 +1,8 @@
 require './utilities.rb'
+require './checkers_helper.rb'
 
 class Piece
+	include CheckersHelper
 
 	attr_accessor :king, :position, :color, :board
 
@@ -21,7 +23,7 @@ class Piece
 	end
 	
 	def valid_slide?(to) 
-		move_available?(to) && @board.empty_square?(position)
+		move_available?(to) && @board.empty_square?(to)
 	end
 
 	def move_available?(to)
@@ -58,14 +60,18 @@ class Piece
 		if successful_move
 			perform_moves!(move_sequence)
 		else
-			raise InvalidMoveError
+			raise InvalidMoveError.new("Can't move there!")
 		end
 	end
 
 	def perform_moves!(move_sequence)
 		successful_move = false
 		if move_sequence.one? 
+			#this may be a slide or a jump
 			successful_move = perform_slide(move_sequence.first)	
+			unless successful_move
+				successful_move = perform_jump(move_sequence.first)
+			end
 		else
 			move_sequence.each do |move|
 				successful_move = perform_jump(move)
