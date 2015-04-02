@@ -1,3 +1,5 @@
+#! /usr/bin/env ruby
+
 require './board.rb'
 
 class Game
@@ -13,10 +15,20 @@ class Game
 		loop do
 			@players.cycle do |player|
 				puts @board.render
+				begin
+					input = player.get_input
+				rescue InvalidMoveError
+					puts "Invalid move! Error: #{e}"
+				end
+				puts input
 				break if board.over?
 			end
 		end
 		puts "Game over!"
 	end
 
+end
+
+if __FILE__ == $PROGRAM_NAME
+	puts "Welcome to checkers!"
 end
