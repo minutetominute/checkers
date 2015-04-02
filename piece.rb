@@ -67,7 +67,6 @@ class Piece
 	def perform_moves!(move_sequence)
 		successful_move = false
 		if move_sequence.one? 
-			#this may be a slide or a jump
 			successful_move = perform_slide(move_sequence.first)	
 			unless successful_move
 				successful_move = perform_jump(move_sequence.first)
@@ -90,7 +89,8 @@ class Piece
 
 	def jumped_location(from, to)
 		vector = from.matrix(:-, to)
-		direction = vector.matrix(:/, vector)
+		absolute_values = vector.map(&:abs)
+		direction = vector.matrix(:/, absolute_values)
 		raise InvalidJumpError unless direction.all? { |el| el.abs == 1 }
 		direction.matrix(:+, to)
 	rescue

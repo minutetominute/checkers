@@ -27,7 +27,6 @@ class Game
 					puts "Invalid move! Error: #{e}"
 					retry
 				end
-				puts input
 				break if @board.over?
 			end
 		end
