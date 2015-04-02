@@ -92,7 +92,7 @@ class Piece
 		vector = from.matrix(:-, to)
 		absolute_values = vector.map(&:abs)
 		direction = vector.matrix(:/, absolute_values)
-		raise InvalidJumpError unless direction.all? { |el| el.abs == 1 }
+		raise InvalidMoveError unless direction.all? { |el| el.abs == 1 }
 		direction.matrix(:+, to)
 	rescue
 		byebug

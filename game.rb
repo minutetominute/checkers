@@ -21,6 +21,7 @@ class Game
 				begin
 					input = player.get_input
 					from = input.shift
+					raise InvalidMoveError.new("Not your piece!") if @board[from].color != player.color
 					raise InvalidMoveError.new("No piece there!") if @board[from].nil?
 					@board[from].perform_moves(input)
 				rescue InvalidMoveError => e
@@ -37,6 +38,6 @@ end
 
 if __FILE__ == $PROGRAM_NAME
 	puts "Welcome to checkers!"
-	game = Game.new(HumanPlayer.new, HumanPlayer.new)
+	game = Game.new(HumanPlayer.new(:red), HumanPlayer.new(:black))
 	game.run
 end

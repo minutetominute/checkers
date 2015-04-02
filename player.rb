@@ -1,11 +1,14 @@
 class Player
-	def initialize
+	attr_reader :color
+	def initialize(color)
+		@color = color
 	end	
 end
 
 class HumanPlayer < Player
 
 	def get_input
+		puts "#{color.to_s.capitalize}'s turn!"
 		puts "Make a move!"
 		input = gets.chomp
 		parse_input(input)
