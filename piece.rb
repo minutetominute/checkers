@@ -2,7 +2,7 @@ require './utilities.rb'
 
 class Piece
 
-	attr_accessor :king, :position, :color
+	attr_accessor :king, :position, :color, :board
 
 	def initialize(board, color)
 		@color = color
@@ -54,17 +54,23 @@ class Piece
 	end
 
 	def perform_moves!(move_sequence)
+		successful_move = false
 		if move_sequence.one? 
-			perform_slide(move_sequence.first)	
+			successful_move = perform_slide(move_sequence.first)	
 		end
 
 		move_sequence.each do |move|
-			perform_jump(move)
+			successful_move = perform_jump(move)
 		end
+		raise InvalidMoveError unless succcessful_move
 	end
 
 	def valid_move_seq?(move_sequence)
-			
+		new_board = board.dup				
+		new_board[self.position].perform_moves!(move_sequence)
+		true
+	rescue InvalidMoveError
+		false
 	end
 
 	def jumped_location(from, to)
@@ -92,8 +98,8 @@ class Piece
 		'●'
 	end
 	
-	def dup_with_board(board)
-		Piece.new(board, color)
+	def dup
+		Piece.new(nil, color)
 	end
 
 end
