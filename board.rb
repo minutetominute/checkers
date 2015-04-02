@@ -1,6 +1,7 @@
 require "byebug"
 require "colorize"
 require "./checkers_helper"
+require "./piece.rb"
 
 class Board
 	include CheckersHelper
